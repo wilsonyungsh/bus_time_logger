@@ -34,7 +34,7 @@ ui <- fluidPage(
       textInput("get_on", "Get On Time (HH:MM)", value = "07:20"),
       textInput("get_off", "Get Off Time (HH:MM)", value = "07:54"),
       actionButton("submit", "Submit"),
-      actionButton("undo", "Undo")
+      downloadButton("download_csv", "Download CSV")
     ),
     mainPanel(
       h3("Travel Time Trend"),
@@ -57,7 +57,7 @@ server <- function(input, output, session) {
   
   refresh_data <- function() {
     conn <- dbConnect(RSQLite::SQLite(), "bus_commute.db")
-    data <- dbGetQuery(conn, "SELECT * FROM commute ORDER BY date ASC")
+    data <- dbGetQuery(conn, "SELECT * FROM commute ORDER BY date DESC")
     dbDisconnect(conn)
     load_data(data)
   }
@@ -135,6 +135,14 @@ server <- function(input, output, session) {
       labs(title = "Trend of Travel Time", x = "Date", y = "Duration (minutes)") +
       theme_minimal()
   })
+  
+  output$download_csv <- downloadHandler(
+    filename = function() { "commute_data.csv" },
+    content = function(file) {
+      data <- load_data()
+      write.csv(data, file, row.names = FALSE)
+    }
+  )
 }
 
 shinyApp(ui, server)
