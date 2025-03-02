@@ -7,5 +7,5 @@ This is mainly to log get on/off time for specific bus route, and whether it's c
 # Dashboard
 The dashboard is hosted on [here](https://wilsonyung.shinyapps.io/bus_time_logger/) on shinyapps.io, I was also exploring other option like using docker to host on my own NAS.
 
-![Dashboard View](images/dashboard_view.tiff)
+![Dashboard View](images/dashboard_view.png)
 
